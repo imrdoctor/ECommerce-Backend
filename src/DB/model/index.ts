@@ -1,0 +1,7 @@
+export * from "./catgory.model";
+export * from "./subcatgory.model";
+export * from "./user.model";
+export * from "./brand.model"
+export * from './otp.model'
+export * from './product.model'
+export * from './coupon.model'

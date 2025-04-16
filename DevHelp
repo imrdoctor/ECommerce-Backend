@@ -1,0 +1,91 @@
+import { Exceptions } from 'src/DevHelp/exceptions.helper';
+import {
+  BadRequestException,
+  ConflictException,
+  ForbiddenException,
+  NotFoundException,
+  UnauthorizedException,
+  InternalServerErrorException,
+} from '@nestjs/common';
+
+export const Exceptions = {
+  // Authentication & Authorization Errors (401, 403)
+  Auth: {
+    NOT_AUTHORIZED: () => 
+      new UnauthorizedException('You are not authorized'),
+    INVALID_CREDENTIALS: () => 
+      new UnauthorizedException('Invalid email or password'),
+    TOKEN_EXPIRED: () => 
+      new UnauthorizedException('Token has expired'),
+    FORBIDDEN: () => 
+      new ForbiddenException('You do not have permission to access this resource'),
+  },
+
+  // Not Found Errors (404)
+  NotFound: {
+    USER: () => 
+      new NotFoundException('User not found'),
+    CATEGORY: () => 
+      new NotFoundException('Category not found'),
+    PRODUCT: () => 
+      new NotFoundException('Product not found'),
+    ORDER: () => 
+      new NotFoundException('Order not found'),
+    OTP: () => 
+      new NotFoundException('OTP not found'),
+  },
+
+  // Conflict Errors (409)
+  Conflict: {
+    USER_EXISTS: () => 
+      new ConflictException('User already exists'),
+    EMAIL_EXISTS: () => 
+      new ConflictException('Email already exists'),
+    CATEGORY_EXISTS: () => 
+      new ConflictException('Category already exists'),
+    PRODUCT_EXISTS: () => 
+      new ConflictException('Product already exists'),
+  },
+
+  // Bad Request Errors (400)
+  BadRequest: {
+    INVALID_OTP: () => 
+      new BadRequestException('Invalid OTP'),
+    OTP_EXPIRED: () => 
+      new BadRequestException('OTP has expired'),
+    ALREADY_CONFIRMED: () => 
+      new BadRequestException('Account is already confirmed'),
+    INVALID_FILE_TYPE: (allowedTypes: string[]) => 
+      new BadRequestException(`Invalid file type. Allowed types are: ${allowedTypes.join(', ')}`),
+    INVALID_DATA: (message: string) => 
+      new BadRequestException(message),
+  },
+
+  // Server Errors (500)
+  Server: {
+    INTERNAL_ERROR: () => 
+      new InternalServerErrorException('Something went wrong'),
+    DATABASE_ERROR: () => 
+      new InternalServerErrorException('Database error occurred'),
+    UPLOAD_ERROR: () => 
+      new InternalServerErrorException('File upload failed'),
+  }
+};
+
+// Usage Example:
+/*
+  if (!user) {
+    throw Exceptions.NotFound.USER();
+  }
+
+  if (userExists) {
+    throw Exceptions.Conflict.USER_EXISTS();
+  }
+
+  if (!validFileType) {
+    throw Exceptions.BadRequest.INVALID_FILE_TYPE(['image/jpeg', 'image/png']);
+  }
+*/
+if (userExists) {
+  throw Exceptions.Conflict.USER_EXISTS();
+}
