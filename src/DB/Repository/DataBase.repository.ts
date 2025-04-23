@@ -1,4 +1,4 @@
-import { FilterQuery, Model, PopulateOptions, Types } from "mongoose";
+import { FilterQuery, Model, PopulateOptions, QueryOptions, Types, UpdateQuery, UpdateWriteOpResult } from "mongoose";
 interface FindOptions <TDocument>{
     filter?: FilterQuery<TDocument>;
     populate?: PopulateOptions[];
@@ -14,9 +14,10 @@ export abstract class DataBaseRepository<TDocument> {
     }
     async findOne(
         query: FilterQuery<TDocument>,
+        populate?: PopulateOptions[]
     ): Promise<TDocument | null> {
-        return this.model.findOne(query);
-    }
+return (await this.model.findOne(query).populate(populate || []) as TDocument
+    )}
     async find({filter = {},populate = [],page = 1,sort = '', select = ' ',limit,} : FindOptions<TDocument>): Promise<TDocument[] | []> {
         const query = this.model.find(filter);
         if (populate) query.populate(populate);
@@ -34,10 +35,17 @@ export abstract class DataBaseRepository<TDocument> {
     }
     async findOneAndUpdate(
         query: FilterQuery<TDocument>,
-        data: Partial<TDocument>,
-    ): Promise<TDocument | null> {
-        return this.model.findOneAndUpdate(query, data, { new: true });
-    }
+        data: UpdateQuery<TDocument>,
+        options: QueryOptions = { new: true },
+      ): Promise<TDocument | null> {
+        return this.model.findOneAndUpdate(query, data, options);
+      }
+    async updateOne(
+        query: FilterQuery<TDocument>,
+        update: UpdateQuery<TDocument>
+      ): Promise<UpdateWriteOpResult> {
+        return this.model.updateOne(query, update);
+      }
     async findByIdAndUpdate(
         id: FilterQuery<TDocument>,
         data: Partial<TDocument>,

@@ -1,0 +1,80 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type SubImageType {
+  public_id: String!
+  secure_url: String!
+}
+
+type ProductType {
+  _id: ID!
+  ProductName: String!
+  Slug: String!
+  Descreption: String!
+  IsDeleted: Boolean!
+  AddedBy: ID!
+  SubcaCategory: ID!
+
+  """Main image URL"""
+  Img: String!
+  SubImgs: [SubImageType!]!
+  Price: Float!
+  Discount: Float!
+  SubPrice: Float!
+  Stock: Float!
+  Quantity: Float!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type OrderItemType {
+  productId: ID!
+  product: ProductType
+  quantity: Float!
+  finalPrice: Float!
+}
+
+type DiscountType {
+  amount_discount: Float
+  amount_shipping: Float
+  amount_tax: Float
+  code: String
+}
+
+type PaymentInfoType {
+  name: String
+  payment_intent: String
+  paidAt: DateTime
+}
+
+type OrderChangesType {
+  refundAt: DateTime
+}
+
+type OrderType {
+  _id: ID!
+  User: ID!
+  Phone: String!
+  Address: String!
+  PaymentMethod: String!
+  PaymentStatus: String!
+  TotalPrice: Float!
+  Status: String!
+  ArriveAt: DateTime!
+  Coupon: ID
+  Items: [OrderItemType!]!
+  discounts: DiscountType
+  PaymentInfo: PaymentInfoType
+  orderChanges: OrderChangesType
+}
+
+type Query {
+  """listOrders"""
+  listOrders: [OrderType!]!
+}

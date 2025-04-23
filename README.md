@@ -96,3 +96,13 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+
+## Stripe Integration
+
+To listen for Stripe events, you need to create an account on Stripe and then use the following command:
+
+```bash
+stripe listen --events checkout.session.completed --forward-to localhost:5000/api/v1/order/webhook
+```
+
+This will forward the events to your local server.

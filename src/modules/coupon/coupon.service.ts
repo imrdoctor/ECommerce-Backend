@@ -32,7 +32,13 @@ export class CouponService {
     async updateCoupon(res: Response,user: UserDocument,params: MongoIdDto , body){
         const coupon = await this._couponRepositoryService.findById(params.id)
         if(!coupon) throw new ConflictException('Coupon Not Found')
-        if(coupon.CreatedBy.toString()!== user._id.toString()) throw new ConflictException('You Are Not Allowed To Update This Coupon')
+        const couponNewCodeExsist = await this._couponRepositoryService.findOne({Code:body.Code})
+    if(coupon.Code !== body.Code && couponNewCodeExsist) throw new ConflictException('Coupon Code Already Exist')
+        if(coupon.CreatedBy.toString()!== user._id.toString()) throw new ConflictException('You Are Not Allowed To Update This Coupon')        
         const updatedCoupon = await this._couponRepositoryService.findByIdAndUpdate(params.id,body)
+        return res.status(200).json({
+            message:'coupon updated successfully',
+            updatedCoupon
+        })
     }
 }

@@ -170,6 +170,7 @@ export class UserService {
   // Get Profile
   async profile(req: Request, res: Response): Promise<{}> {
     const user = req['user'];
+    const decryptedPhone = Decrypt(user.phone,process.env.CRYPTO_SECRET).toString()
     return res.status(200).json({
       message: 'User profile',
       User: {
@@ -178,6 +179,7 @@ export class UserService {
         email: user.email,
         age: user.age,
         role: user.role,
+        phone : decryptedPhone,
         confirmed: user.confirmed,
         createdAt: user.createdAt,
       },

@@ -5,3 +5,5 @@ export * from "./brand.model"
 export * from './otp.model'
 export * from './product.model'
 export * from './coupon.model'
+export * from './cart.model'
+export * from './order.model'

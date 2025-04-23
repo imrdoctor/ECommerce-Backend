@@ -58,19 +58,24 @@ export class User {
   @Prop({ type: String, required: true, minlength: 2, maxlength: 25 })
   adress: string;
 
-  @Prop({ type: String, required: true, minlength: 10, maxlength: 15 })
+  @Prop({ type: String, required: true, minlength: 10, maxlength: 100 })
   phone: string;
   @Prop({ type: Boolean, default: false })
   isDeleted: boolean;
+  @Prop({ type: Boolean })
+  cartLocked: boolean;
   @Prop({ type: String, enum: LoginProvider, default: LoginProvider.email })
   provicer: string;
 }
 export const UserSchema = SchemaFactory.createForClass(User);
 UserSchema.pre('save', function (next) {
   if (this.isModified('password')) {
+    console.log('hashed');
     this.password = Hash(this.password);
   }
   if (this.isModified('phone')) {
+    console.log('crypted');
+    
     this.phone = Encrypt(this.phone, process.env.CRYPTO_SECRET);  }
   next();
 });

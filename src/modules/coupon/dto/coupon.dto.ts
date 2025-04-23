@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { IsDate, IsNotEmpty, IsNumber, IsPositive, IsString, Length, Max, Min, Validate } from "class-validator";
+import { IsDate, IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString, Length, Max, Min, Validate } from "class-validator";
 import { IsAfterFromDateConstraint, IsFutureDateConstraint } from "src/common/decorator/is-before.decorator";
 
 export class CrateCouponDto{
@@ -27,22 +27,22 @@ export class CrateCouponDto{
 }
 export class updateCouponDto{
     @IsString()    
-    @IsNotEmpty()
+    @IsOptional()
     @Length(2,10)
     Code:string;
     @Type(()=>Number)
-    @IsNotEmpty()
+    @IsOptional()
     @IsPositive()
     @IsNumber()
     @Min(1)
     @Max(100)
     Amount:number;
-    @IsNotEmpty()
+    @IsOptional()
     @Type(()=>Date)
     @IsDate()
     @Validate(IsFutureDateConstraint)
     FromDate:Date;
-    @IsNotEmpty()
+    @IsOptional()
     @Type(()=>Date)
     @IsDate()
     @Validate(IsAfterFromDateConstraint)
