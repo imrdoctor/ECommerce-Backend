@@ -1,7 +1,14 @@
-import { IsDate, IsEmail, IsEnum, IsNotEmpty, IsString, IsStrongPassword, Max, MaxLength, Min, MinLength, Validate } from "class-validator";
+import { Type } from "class-transformer";
+import { IsDate, IsEmail, IsEnum, isNotEmpty, IsNotEmpty, IsString, IsStrongPassword, MaxLength, MinLength, ValidateNested } from "class-validator";
 import { IsMatchDecorator } from "src/common/decorator/is-match.decorator";
 import { UserGender, UserRoles } from "src/common/types/types";
-
+export class ConfirmEmail{
+    @IsString()
+    @IsNotEmpty()
+    @MaxLength(6)
+    @MinLength(6)
+    otp: string;
+}
 export class CustomUserRegister {
     @IsString()
     @IsNotEmpty()
@@ -19,8 +26,14 @@ export class CustomUserRegister {
     password: string;
     @IsMatchDecorator("password")    
     confirmPassword: string;
-    // @IsDate()
-    age: Date;
+    @IsString()
+    @IsNotEmpty()
+    @MaxLength(6)
+    @MinLength(6)
+    emailVerfyCode: string;    
+    @IsDate()
+    @Type(() => Date)
+    birthDate: Date;
     @IsEnum(UserGender)
     gender: string;
     @IsString()
@@ -40,12 +53,9 @@ export class CustomUserLogin {
     @IsStrongPassword()
     password: string;
 }
-export class ConfirmEmail{
-    @IsString()
-    @IsNotEmpty()
-    @MaxLength(6)
-    @MinLength(6)
-    otp: string;
+export class sendConfirmregisterEmail{
+    @IsEmail()
+    email: string;
 }
 export class AdminUpdateUserDto{
     @IsEnum(UserRoles)

@@ -37,8 +37,8 @@ export class User {
   @Prop({ type: String, required: true, minlength: 8, maxlength: 80 })
   password: string;
 
-  @Prop({ type: Number, required: true, min: 18, max: 100 })
-  age: number;
+  @Prop({ type: Date, required: true })
+  birthDate: Date;
 
   @Prop({ type: Boolean, default: false })
   confirmed: boolean;
@@ -65,16 +65,14 @@ export class User {
   @Prop({ type: Boolean })
   cartLocked: boolean;
   @Prop({ type: String, enum: LoginProvider, default: LoginProvider.email })
-  provicer: string;
+  provider: string;
 }
 export const UserSchema = SchemaFactory.createForClass(User);
 UserSchema.pre('save', function (next) {
   if (this.isModified('password')) {
-    console.log('hashed');
     this.password = Hash(this.password);
   }
   if (this.isModified('phone')) {
-    console.log('crypted');
     
     this.phone = Encrypt(this.phone, process.env.CRYPTO_SECRET);  }
   next();

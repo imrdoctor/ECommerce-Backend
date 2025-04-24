@@ -2,7 +2,6 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import {config } from 'dotenv'
 import {resolve} from 'path'
-import { Decrypt } from './common/security/crypto.helper';
 config({path:resolve("./config/.env")})
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
