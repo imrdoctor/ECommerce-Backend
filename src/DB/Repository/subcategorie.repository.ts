@@ -15,7 +15,7 @@ export class subcatgoryRepositoryService extends DataBaseRepository<subCatgoryDo
     ) {
         super(_subcatgoryModel);
      }
-     createSubCategory({ SubCatgoryName, AddedBy , Catgory , img }: catgoryOptaions): Promise<subCatgoryDocument> {
+     createSubcategorie({ SubCatgoryName, AddedBy , Catgory , img }: catgoryOptaions): Promise<subCatgoryDocument> {
         return this._subcatgoryModel.create({
         SubCatgoryName,
           AddedBy,

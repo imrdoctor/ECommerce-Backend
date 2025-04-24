@@ -39,12 +39,12 @@ export class createProductDto {
   @IsNotEmpty()
   Quantity: number;
   @IsMongoId({
-    message: 'Invalid ID format. Please provide a valid SubcaCategory id'
+    message: 'Invalid ID format. Please provide a valid Subcacategorie id'
 })
 @IsNotEmpty({
-    message: 'SubcaCategory ID is required'
+    message: 'Subcacategorie ID is required'
 })
-  SubcaCategory: Types.ObjectId;
+  Subcacategorie: Types.ObjectId;
 }
 export class updateProductInfo{
   @IsString()

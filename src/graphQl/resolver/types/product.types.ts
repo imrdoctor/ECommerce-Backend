@@ -32,7 +32,7 @@ export class ProductType implements Partial<product> {
     AddedBy: Types.ObjectId;
 
     @Field(() => ID)
-    SubcaCategory: Types.ObjectId;
+    Subcacategorie: Types.ObjectId;
 
     @Field(() => String, { description: "Main image URL" })
     Img: string;

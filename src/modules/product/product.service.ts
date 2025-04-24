@@ -4,7 +4,7 @@ import { createProductDto, UpdateProductSubImgs, updateProductInfo, QueryDto } f
 import { Request, Response } from 'express';
 import { productDocument, UserDocument } from 'src/DB/model';
 import { CloudinaryServece } from 'src/common/cloudinary/cloudinary.servece';
-import { subcatgoryRepositoryService } from 'src/DB/Repository/subcatgory.repository';
+import { subcatgoryRepositoryService } from 'src/DB/Repository/subcategorie.repository';
 import { MongoIdDto } from '../GlobalDto/global.dto';
 import { FilterQuery } from 'mongoose';
 
@@ -29,12 +29,12 @@ export class ProductService {
       Discount,
       Stock,
       Quantity,
-      SubcaCategory,
+      Subcacategorie,
     } = body;
     const existingSubCatgory =
-      await this._subcatgoryRepositoryService.findById(SubcaCategory);
+      await this._subcatgoryRepositoryService.findById(Subcacategorie);
     if (!existingSubCatgory) {
-      throw new ConflictException('SubCategory not found');
+      throw new ConflictException('Subcategorie not found');
     }
     let imageData = { public_id: '', secure_url: '' };
     if (imgs.img) {
@@ -68,7 +68,7 @@ export class ProductService {
       Quantity,
       Img: imageData,
       AddedBy: user._id,
-      SubcaCategory,
+      Subcacategorie,
       SubImgs: SubimagesData,
     });
     return res.status(201).json({
@@ -238,7 +238,7 @@ export class ProductService {
   
     const products = await this._ProductRepositoryService.find({
       filter: filterObject,
-      populate: [{ path: 'SubcaCategory' }],
+      populate: [{ path: 'Subcacategorie' }],
       select,
       sort,
       page: numericPage,

@@ -4,7 +4,7 @@ import { ProductController } from './product.controller';
 import { productModel } from '../../DB/model/product.model';
 import { ProductRepositoryService } from '../../DB/Repository/product.repository';
 import { subCatgoryModel, UserModel } from 'src/DB/model';
-import { subcatgoryRepositoryService } from 'src/DB/Repository/subcatgory.repository';
+import { subcatgoryRepositoryService } from 'src/DB/Repository/subcategorie.repository';
 import { CloudinaryServece } from 'src/common/cloudinary/cloudinary.servece';
 
 @Module({

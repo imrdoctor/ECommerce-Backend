@@ -11,13 +11,13 @@ import { CloudinaryServece } from 'src/common/cloudinary/cloudinary.servece';
 import { Types } from 'mongoose';
 import { MongoIdDto } from '../GlobalDto/global.dto';
 @Injectable()
-export class CategoryService {
+export class categorieService {
   constructor(
     private readonly _catgoryRepositoryService: catgoryRepositoryService,
     private readonly _CloudinaryServece: CloudinaryServece,
   ) {}
-  //////////////////// Create Category ////////////////////
-  async createCategory(
+  //////////////////// Create categorie ////////////////////
+  async createcategorie(
     req: Request,
     res: Response,
     body: crateCatgoryDto,
@@ -28,12 +28,12 @@ export class CategoryService {
       name: body.name,
     });
     if (existingCatgory) {
-      throw new NotFoundException('Category already exists');
+      throw new NotFoundException('categorie already exists');
     }
     let imageData = { public_id: '', secure_url: '' };
     if (img) {
       const uploadedImage = await this._CloudinaryServece.uploadFile(img, {
-        folder: 'ecommerce/category/logo',
+        folder: 'ecommerce/categorie/logo',
         public_id: `${body.name}`,
       });
       imageData = {
@@ -42,19 +42,19 @@ export class CategoryService {
       };
     }
 
-    const catgory = await this._catgoryRepositoryService.createCategory({
+    const catgory = await this._catgoryRepositoryService.createcategorie({
       name: body.name,
       AddedBy: user._id,
       ...(img && { image: imageData }),
     });
 
     return res.status(201).json({
-      message: 'Category created successfully',
+      message: 'categorie created successfully',
       catgory,
     })
   }
-  //////////////////// Update Category ////////////////////
-  async updateCategoryImg(
+  //////////////////// Update categorie ////////////////////
+  async updatecategorieImg(
     req: Request,
     res: Response,
     body: updateCatgoryImgDto,
@@ -67,11 +67,11 @@ export class CategoryService {
     }
     const catgory = await this._catgoryRepositoryService.findById(new Types.ObjectId(id.id));
     if (!catgory) {
-      throw new NotFoundException('Category not found');
+      throw new NotFoundException('categorie not found');
     }
     if (catgory.AddedBy.toString() !== user._id.toString()) {
       throw new BadRequestException(
-        'You are not authorized to update this category',
+        'You are not authorized to update this categorie',
       );
     }
     if (catgory.image && 'public_id' in catgory.image) {
@@ -79,7 +79,7 @@ export class CategoryService {
       await this._CloudinaryServece.deleteFile(public_id);
     }
     const uploadedImage = await this._CloudinaryServece.uploadFile(img, {
-      folder: 'ecommerce/category/logo',
+      folder: 'ecommerce/categorie/logo',
       public_id: `${catgory.name}`,
     });
     let imageData = {
@@ -91,11 +91,11 @@ export class CategoryService {
         image: imageData,
       });
     return res.status(200).json({
-      message: 'Category updated successfully',
+      message: 'categorie updated successfully',
       updatedCatgoryImg: uploadedImage.secure_url,
     });
   }
-  async updateCategoryName(
+  async updatecategorieName(
     req: Request,
     res: Response,
     body: updateCatgoryNameDto,
@@ -104,22 +104,22 @@ export class CategoryService {
   ) {
     const catgory = await this._catgoryRepositoryService.findById(new Types.ObjectId(id.id));
     if (!catgory) {
-      throw new NotFoundException('Category not found');
+      throw new NotFoundException('categorie not found');
     }
     const {name} = body
     if(name === catgory.name) {
-      throw new BadRequestException('Category Name is same');
+      throw new BadRequestException('categorie Name is same');
     }
     const existingCatgory = await this._catgoryRepositoryService.findOne({
       name,
     });
     if (existingCatgory) {
-      throw new NotFoundException('Category Name already exists');
+      throw new NotFoundException('categorie Name already exists');
     }
 
     if (catgory.AddedBy.toString() !== user._id.toString()) {
       throw new BadRequestException(
-        'You are not authorized to update this category',
+        'You are not authorized to update this categorie',
       );
     }
     const updatedCatgoryName =
@@ -127,35 +127,45 @@ export class CategoryService {
         name: body.name,
       });
       return res.status(200).json({
-        message: 'Category updated successfully',
+        message: 'categorie updated successfully',
         updatedCatgoryName,
       });
   }
-  async deleteCategory(
+  async deletecategorie(
     req: Request,
     res: Response, 
     user: UserDocument,
     id: MongoIdDto,
   ) {  
-    const category = await this._catgoryRepositoryService.findById(new Types.ObjectId(id.id));
-    if (!category) {
-      throw new NotFoundException('Category not found');
+    const categorie = await this._catgoryRepositoryService.findById(new Types.ObjectId(id.id));
+    if (!categorie) {
+      throw new NotFoundException('categorie not found');
     }
 
-    if (category.AddedBy.toString() !== user._id.toString()) {
+    if (categorie.AddedBy.toString() !== user._id.toString()) {
       throw new BadRequestException(
-        'You are not authorized to delete this category',
+        'You are not authorized to delete this categorie',
       );
     }
 
-    if (category.image && 'public_id' in category.image) {
-      const public_id = category.image.public_id as string;
+    if (categorie.image && 'public_id' in categorie.image) {
+      const public_id = categorie.image.public_id as string;
       await this._CloudinaryServece.deleteFile(public_id);
     }
     await this._catgoryRepositoryService.findByIdAndDelete(new Types.ObjectId(id.id));
     // delete all products and all subcatgory related with this catgory
     return res.status(200).json({
-      message: 'Category deleted successfully'
+      message: 'categorie deleted successfully'
     });
+  }
+  async getAllCategories(res: Response){
+    const categories = await this._catgoryRepositoryService.findAll();
+    if(!categories) {
+      throw new NotFoundException('No Categories Added');
+    }
+    return res.status(200).json({
+      message: 'Categories fetched successfully',
+      categories, 
+    })
   }
 }

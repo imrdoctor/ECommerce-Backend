@@ -16,7 +16,7 @@ export class catgoryRepositoryService extends DataBaseRepository<catgoryDocument
   ) {
     super(_catgoryModel);
   }
-  createCategory({ name, AddedBy , image }: catgoryOptaions): Promise<catgoryDocument> {
+  createcategorie({ name, AddedBy , image }: catgoryOptaions): Promise<catgoryDocument> {
     return this._catgoryModel.create({
       name,
       AddedBy,

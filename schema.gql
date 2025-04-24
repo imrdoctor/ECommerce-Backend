@@ -14,7 +14,7 @@ type ProductType {
   Descreption: String!
   IsDeleted: Boolean!
   AddedBy: ID!
-  SubcaCategory: ID!
+  Subcacategorie: ID!
 
   """Main image URL"""
   Img: String!

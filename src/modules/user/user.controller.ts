@@ -33,7 +33,7 @@ export class UserController {
   @UsePipes(new ValidationPipe({
     whitelist: true,
   }))
-  //////////////////// Create Category ////////////////////
+  //////////////////// Create categorie ////////////////////
   Login(
     @Req() req,
     @Body() body: CustomUserLogin,
@@ -52,7 +52,7 @@ export class UserController {
   ): Object {
     return this._userService.profile(req, res);
   }
-  //////////////////// Update Category ////////////////////
+  //////////////////// Update categorie ////////////////////
   // @UseGuards(AuthGuard)
   // @Post('confirm')
   // @UsePipes(new ValidationPipe({

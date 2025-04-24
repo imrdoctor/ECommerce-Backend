@@ -30,7 +30,7 @@ export class product {
   @Prop({ type: Types.ObjectId, ref: User.name, required: true })
   AddedBy: Types.ObjectId;
   @Prop({ type: Types.ObjectId, ref: subCatgory.name, required: true })
-  SubcaCategory: Types.ObjectId;
+  Subcacategorie: Types.ObjectId;
   @Prop({ type: Object , required: true })
   Img: Object;
   @Prop({

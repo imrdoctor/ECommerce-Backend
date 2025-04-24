@@ -15,7 +15,7 @@ interface ProductOptions {
   Img: { public_id: string; secure_url: string };
   AddedBy: Types.ObjectId;
   SubImgs?: Array<{ public_id: string; secure_url: string }>;
-  SubcaCategory: Types.ObjectId;
+  Subcacategorie: Types.ObjectId;
 }
 
 @Injectable()
@@ -38,7 +38,7 @@ export class ProductRepositoryService extends DataBaseRepository<productDocument
     Img,
     AddedBy,
     SubImgs,
-    SubcaCategory,
+    Subcacategorie,
   }: ProductOptions): Promise<productDocument> {
     return this._productModel.create({
       ProductName,
@@ -51,7 +51,7 @@ export class ProductRepositoryService extends DataBaseRepository<productDocument
       ...(Img && { Img }),
       AddedBy,
       ...(SubImgs && { SubImgs }),
-      SubcaCategory
+      Subcacategorie
     });
   }
 }

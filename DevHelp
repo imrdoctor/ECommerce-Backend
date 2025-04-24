@@ -25,8 +25,8 @@ export const Exceptions = {
   NotFound: {
     USER: () => 
       new NotFoundException('User not found'),
-    CATEGORY: () => 
-      new NotFoundException('Category not found'),
+    categorie: () => 
+      new NotFoundException('categorie not found'),
     PRODUCT: () => 
       new NotFoundException('Product not found'),
     ORDER: () => 
@@ -41,8 +41,8 @@ export const Exceptions = {
       new ConflictException('User already exists'),
     EMAIL_EXISTS: () => 
       new ConflictException('Email already exists'),
-    CATEGORY_EXISTS: () => 
-      new ConflictException('Category already exists'),
+    categorie_EXISTS: () => 
+      new ConflictException('categorie already exists'),
     PRODUCT_EXISTS: () => 
       new ConflictException('Product already exists'),
   },
