@@ -260,7 +260,7 @@ export class OrderService {
         cartLocked: false,
       });
     }
-    this.realtimeGateway.sendPurchaseNotification();
+    this.realtimeGateway.emitPurchase();
     console.log("sucsess payment");
     
     return { received: true };
