@@ -1,11 +1,31 @@
-import { Types } from "mongoose";
-import { User } from "src/DB/model";
-import { IsString, IsNumber, Min, Max, Length, IsBoolean, IsMongoId, IsNotEmpty, IsOptional, IsArray, ValidateNested, IsPositive } from 'class-validator';
-import { Transform, Type } from "class-transformer";
-import { IsArrayOfMongoIds } from "src/common/decorator/isArryOfMongoIds.decorator";
-import { sanitizeFields } from "src/common/decorator/sanitize-fields.decorator";
-import { sanitizeSort } from "src/common/decorator/sanitize-sort.decorator";
-export const allowedFields = ['ProductName', 'Price', 'Stock', 'Slug', 'Discount', 'SubPrice'];
+import { Types } from 'mongoose';
+import { User } from 'src/DB/model';
+import {
+  IsString,
+  IsNumber,
+  Min,
+  Max,
+  Length,
+  IsBoolean,
+  IsMongoId,
+  IsNotEmpty,
+  IsOptional,
+  IsArray,
+  ValidateNested,
+  IsPositive,
+} from 'class-validator';
+import { Transform, Type } from 'class-transformer';
+import { IsArrayOfMongoIds } from 'src/common/decorator/isArryOfMongoIds.decorator';
+import { sanitizeFields } from 'src/common/decorator/sanitize-fields.decorator';
+import { sanitizeSort } from 'src/common/decorator/sanitize-sort.decorator';
+export const allowedFields = [
+  'ProductName',
+  'Price',
+  'Stock',
+  'Slug',
+  'Discount',
+  'SubPrice',
+];
 
 export class createProductDto {
   @IsString()
@@ -39,14 +59,19 @@ export class createProductDto {
   @IsNotEmpty()
   Quantity: number;
   @IsMongoId({
-    message: 'Invalid ID format. Please provide a valid Subcacategorie id'
-})
-@IsNotEmpty({
-    message: 'Subcacategorie ID is required'
-})
+    message: 'Invalid ID format. Please provide a valid Subcacategorie id',
+  })
+  @IsNotEmpty({
+    message: 'Subcacategorie ID is required',
+  })
   Subcacategorie: Types.ObjectId;
+  @IsMongoId({
+    message: 'Invalid ID format. Please provide a valid Brand id',
+  })
+  @IsNotEmpty()
+  Brand: Types.ObjectId;
 }
-export class updateProductInfo{
+export class updateProductInfo {
   @IsString()
   @Length(2, 20)
   ProductName: string;
@@ -55,7 +80,6 @@ export class updateProductInfo{
   @Length(5, 100)
   Descreption: string;
 
-  
   @IsNumber()
   @IsNotEmpty()
   @Min(1)

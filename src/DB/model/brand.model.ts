@@ -17,19 +17,22 @@ export class brand {
     minlength: 2,
     maxlength: 20,
     default: function () {
-      return slugify.default(this.name, { lower: true, trim: true });
+      return slugify.default(this.BrandName, { lower: true, trim: true });
     },
   })
   Slug: string;
+  @Prop({ type: [Types.ObjectId], ref: User.name, default: [] })
+  Employees: Types.ObjectId[];
   @Prop({ type: Types.ObjectId, ref: User.name, required: true })
   CreatedBy: Types.ObjectId;
   @Prop({ type: Types.ObjectId, ref: catgory.name, required: true })
   Catgory: Types.ObjectId;
-  @Prop({ type: Types.ObjectId, ref: subCatgory.name, required: true })
-  SubCatgory: Types.ObjectId;
-  @Prop({ type: Boolean, default: false })
-  IsDeleted: boolean;
-  @Prop({ type: Object })
+  @Prop({
+    type: {
+      public_id: { type: String, required: true },
+      secure_url: { type: String, required: true },
+    },
+  })
   Image: Object;
 }
 export const brandSchema = SchemaFactory.createForClass(brand);

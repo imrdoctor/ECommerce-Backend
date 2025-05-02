@@ -7,34 +7,33 @@ import { CloudinaryServece } from 'src/common/cloudinary/cloudinary.servece';
 import { subcatgoryRepositoryService } from 'src/DB/Repository/subcategorie.repository';
 import { MongoIdDto } from '../GlobalDto/global.dto';
 import { FilterQuery } from 'mongoose';
+import { brandRepositoryService } from 'src/DB/Repository';
 
 @Injectable()
 export class ProductService {
   constructor(
     private readonly _ProductRepositoryService: ProductRepositoryService,
     private readonly _subcatgoryRepositoryService: subcatgoryRepositoryService,
+    private readonly _brandRepositoryService: brandRepositoryService,
     private readonly _CloudinaryServece: CloudinaryServece,
   ) {}
   async createProduct(
     body: createProductDto,
     res: Response,
-    req: Request,
     user: UserDocument,
     imgs: { img?: Express.Multer.File; SubImgs?: Express.Multer.File[] },
   ) {
-    const {
-      ProductName,
-      Descreption,
-      Price,
-      Discount,
-      Stock,
-      Quantity,
-      Subcacategorie,
-    } = body;
-    const existingSubCatgory =
-      await this._subcatgoryRepositoryService.findById(Subcacategorie);
-    if (!existingSubCatgory) {
+    const {ProductName,Descreption,Price,Discount,Stock,Quantity,Subcacategorie,Brand} = body;
+    if (!await this._subcatgoryRepositoryService.findById(Subcacategorie)) {
       throw new ConflictException('Subcategorie not found');
+    }
+    const exsistBrand = await this._brandRepositoryService.findById(Brand)
+    if (!exsistBrand) {
+      throw new ConflictException('Brand not found');
+    }
+    // check if the user from brand staff 
+    if(exsistBrand.CreatedBy.toString()!== user._id.toString() || !exsistBrand.Employees.map(id => id.toString()).includes(user._id.toString()) ){
+      throw new ConflictException('You are not authorized to add product to this brand');
     }
     let imageData = { public_id: '', secure_url: '' };
     if (imgs.img) {
@@ -70,6 +69,7 @@ export class ProductService {
       AddedBy: user._id,
       Subcacategorie,
       SubImgs: SubimagesData,
+      Brand
     });
     return res.status(201).json({
       status: 'success',
@@ -217,8 +217,6 @@ export class ProductService {
       updatedSubImgs,
     });
   }
-  
-
   async getAllProducts(req: Request, res: Response, query: QueryDto) {
     const { name, select, sort, page = 1, limit = 10 } = query;
   

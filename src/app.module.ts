@@ -13,6 +13,7 @@ import { CoreModule } from './Core/core.module';
 import { GraphQlConfigModule } from './graphQl/graphql.config';
 import { categorieModule } from './modules/categorie/categorie.module';
 import { SubcategorieModule } from './modules/subcategorie/subcategory.module';
+import { BrandModule } from './modules/brand/brand.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -29,7 +30,8 @@ import { SubcategorieModule } from './modules/subcategorie/subcategory.module';
     ProductModule,
     CouponModule,
     CartModule,
-    OrderModule
+    OrderModule,
+    BrandModule
   ],
   controllers: [AppController],
   providers: [AppService],

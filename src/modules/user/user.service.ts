@@ -13,10 +13,10 @@ import { TokenService } from 'src/common/security/Jwt';
 import { OtpTypes } from 'src/common/types/types';
 import {
   UserRepositoryService,
+  emailOtpRepositoryService,
   otpRepositoryService,
 } from 'src/DB/Repository/index';
 import { ConfirmEmail, CustomUserLogin, CustomUserRegister, sendConfirmregisterEmail } from './dto/customUser.dto';
-import { emailOtpRepositoryService } from 'src/DB/Repository/emailOtp.repository';
 
 @Injectable()
 export class UserService {

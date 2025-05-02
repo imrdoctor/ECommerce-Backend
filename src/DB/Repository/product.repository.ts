@@ -16,6 +16,7 @@ interface ProductOptions {
   AddedBy: Types.ObjectId;
   SubImgs?: Array<{ public_id: string; secure_url: string }>;
   Subcacategorie: Types.ObjectId;
+  Brand:Types.ObjectId;
 }
 
 @Injectable()

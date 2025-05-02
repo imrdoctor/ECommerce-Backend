@@ -1,7 +1,7 @@
 import { Field, ID, ObjectType } from "@nestjs/graphql";
 import { Types } from "mongoose";
 import { OrderStatus, PaymentMethods, PaymentStatus } from "src/common/types/types";
-import { Cart, Order } from "src/DB/model";
+import { Order } from "src/DB/model";
 import { ProductType } from "./product.types";
 
 @ObjectType()

@@ -28,10 +28,9 @@ export class ProductController {
         @UploadedFiles() imgs: {img?:Express.Multer.File,SubImgs?:Express.Multer.File[]},
         @Body() body: createProductDto,
         @Res() res: Response,
-        @Req() req : Request,
         @UserDecorator() user: UserDocument,
     ) {
-        return this.productService.createProduct(body,res,req,user,imgs);
+        return this.productService.createProduct(body,res,user,imgs);
     }
     @Patch('update/info/:id')
     @Auth(UserRoles.ADMIN)

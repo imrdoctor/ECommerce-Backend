@@ -4,6 +4,7 @@ import * as slugify from 'slugify';
 import { User } from './user.model';
 import { catgory } from './catgory.model';
 import { subCatgory } from './subcatgory.model';
+import { brand } from './brand.model';
 export type productDocument = HydratedDocument<product> & { _id: string };
 @Schema({
   timestamps: true,
@@ -33,6 +34,8 @@ export class product {
   Subcacategorie: Types.ObjectId;
   @Prop({ type: Object , required: true })
   Img: Object;
+  @Prop({type: Types.ObjectId, ref: brand.name, required: true})
+  Brand: Types.ObjectId;
   @Prop({
     type: [
       {
@@ -50,6 +53,7 @@ export class product {
   }[];
   @Prop({ type: Number, required: true })
   Price: number;
+
   @Prop({ type: Number, required: true , min: 1, max: 100 })
   Discount: number;
   @Prop({ type: Number, required: true })

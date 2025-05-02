@@ -15,10 +15,8 @@ export class AuthGuard implements CanActivate {
     private readonly UserRepositoryService: UserRepositoryService,
   ) {}
   async canActivate(context: ExecutionContext): Promise<any> {
-    console.log(context['contextType']);
-      const request = context.switchToHttp().getRequest() || GqlExecutionContext.create(context).getContext().req;;
-
-      const [type, token] = request.headers.authorization?.split(' ') || [];
+      const request = context.switchToHttp().getRequest() || GqlExecutionContext.create(context).getContext().req;;      
+      const [type, token] = request.headers.authorization?.split(' ') || [];      
       if (!token && !type) {
         throw new ForbiddenException('Forbidden resource');
       }

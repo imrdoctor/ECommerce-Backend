@@ -5,11 +5,19 @@ import { UserService } from './user.service';
 import { AuthGuard } from 'src/common/guards/authentication';
 import { UserRoles } from 'src/common/types/types';
 import { Auth } from 'src/common/decorator/auth';
+import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 @Controller('api/v1/user')
 export class UserController {   
   constructor(private readonly _userService: UserService) {}
   @Post('register/verify-email')
+  @ApiOperation({ summary: 'Send Email Confarmtion For Register' })
+  @ApiBody({ type: sendConfirmregisterEmail })
+  @ApiResponse({
+    status: 200,
+    description: 'Email Send Successfully',
+    type: sendConfirmregisterEmail,
+  })
   @UsePipes(new ValidationPipe({
     whitelist: true,
   }))
