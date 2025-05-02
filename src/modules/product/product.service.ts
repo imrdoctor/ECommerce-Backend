@@ -184,7 +184,6 @@ export class ProductService {
   
     let updatedSubImgs = [...ExsistProduct.SubImgs];
   
-    // حذف الصور
     if (deleteImg && deleteImg.length > 0) {
       for (const imgId of deleteImg) {
         const targetImg = ExsistProduct.SubImgs.find(img => img._id?.toString() === imgId);
@@ -207,7 +206,6 @@ export class ProductService {
       }
     }
   
-    // تحديث بيانات المنتج في قاعدة البيانات
     ExsistProduct.SubImgs = updatedSubImgs;
     await ExsistProduct.save();
   

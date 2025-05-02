@@ -29,6 +29,7 @@ import { differenceInDays } from 'date-fns';
 import { Types } from 'mongoose';
 import { Cache } from 'cache-manager';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { RealtimeGateway } from '../realtime/realtime.gateway';
 
 @Injectable()
 export class OrderService {
@@ -38,6 +39,7 @@ export class OrderService {
     private readonly _paymentService: PaymentService,
     private readonly _couponRepositoryService: couponRepositoryService,
     private readonly _userRepositoryService: UserRepositoryService,
+    private readonly realtimeGateway: RealtimeGateway,
     @Inject(CACHE_MANAGER) private _cacheManager: Cache
   ) {}
   async getAllUserOrders(user: UserDocument, res: Response) {
@@ -67,7 +69,6 @@ export class OrderService {
       { $unset: { uniqueCartCode: "" } } ,
       { new: true }
     );
-    console.log(cart);
     if(!cart) throw new ConflictException('Somthing wrong')
     user.cartLocked = false
     await user.save()
@@ -154,7 +155,6 @@ export class OrderService {
     } else if (PaymentMethod === PaymentMethods.card) {
       // lock cart
       const uniqueCartCode = [...Array(10)].map(() => Math.random().toString(36)[2]).join('');
-      console.log(uniqueCartCode);
       cart.uniqueCartCode = uniqueCartCode
       await cart.save()
       await this._userRepositoryService.findByIdAndUpdate(user._id, {
@@ -221,12 +221,7 @@ export class OrderService {
       const { CartId, UserId, Phone, Address, Coupon , uniqueCartCode } = body?.data?.object?.metadata;
       const { amount_discount, amount_shipping, amount_tax } = body?.data?.object?.total_details;
       const cart = await this._cartRepositoryService.findById(CartId);
-      const decryptedUniqueCartCode = await Decrypt(cart?.uniqueCartCode ?? '', process.env.CRYPTO_SECRET);
-      console.log("Decrypted Cart Code:", decryptedUniqueCartCode);
-      console.log("Original Cart Code:", uniqueCartCode);
-      console.log(
-        cart?.uniqueCartCode?.trim().toLowerCase() !== decryptedUniqueCartCode?.trim().toLowerCase()
-      );      
+      const decryptedUniqueCartCode = await Decrypt(cart?.uniqueCartCode ?? '', process.env.CRYPTO_SECRET); 
       if (uniqueCartCode?.trim().toLowerCase() !== decryptedUniqueCartCode?.trim().toLowerCase()) {
         console.log("Refund payment triggered");
         await this._paymentService.refund({
@@ -265,6 +260,7 @@ export class OrderService {
         cartLocked: false,
       });
     }
+    this.realtimeGateway.sendPurchaseNotification();
     console.log("sucsess payment");
     
     return { received: true };

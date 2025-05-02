@@ -1,0 +1,30 @@
+<!-- THIS IS FOR TEST ONLY :) -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Socket.IO Test</title>
+</head>
+<body>
+  <h1>Socket.IO Test</h1>
+  <div id="messages"></div>
+
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+  <script>
+    const socket = io('http://localhost:5000');
+
+    socket.on('connect', () => {
+      console.log('Connected to server with ID:', socket.id);
+    });
+
+    socket.on('purchase', (data) => {
+      const div = document.getElementById('messages');
+      div.innerHTML += `<p>${data.message}</p>`;
+    });
+
+    socket.on('disconnect', () => {
+      console.log('Disconnected from server');
+    });
+  </script>
+</body>
+</html>
